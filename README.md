@@ -7,7 +7,8 @@
 
 
 # Dev Instructions:
-- 
-- 
+1. python collect_data.py
+-  pip install (if it asks for python)
+2. 
 - 
 - 

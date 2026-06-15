@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tekken 8 Win Predictor</title>
   <link rel="stylesheet" href="style.css" />
+  <script>if (localStorage.getItem('tekken-theme') === 'light') document.documentElement.classList.add('light');</script>
 </head>
 <body>
   <main>
@@ -45,8 +46,15 @@
     <section id="error-msg" class="hidden error">
       <p id="error-text"></p>
     </section>
+
+    <div class="quiz-cta">
+      <span class="quiz-cta-label">New to Tekken 8?</span>
+      <a href="quiz.html" class="quiz-cta-btn">Find your character →</a>
+    </div>
   </main>
 
+  <button id="theme-toggle" class="theme-toggle">☀ Light</button>
   <script src="app.js"></script>
+  <script src="theme.js"></script>
 </body>
 </html>
