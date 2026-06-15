@@ -1,0 +1,181 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0d0d0d;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 16px;
+}
+
+main {
+  width: 100%;
+  max-width: 640px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: #ff3c3c;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin-top: 8px;
+  margin-bottom: 36px;
+  font-size: 0.95rem;
+}
+
+/* --- Form --- */
+#predict-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.players {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.player-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+input[type="text"] {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #f0f0f0;
+  font-size: 1rem;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+input[type="text"]:focus {
+  border-color: #ff3c3c;
+}
+
+.vs {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #555;
+  padding-bottom: 12px;
+  flex-shrink: 0;
+}
+
+button[type="submit"] {
+  background: #ff3c3c;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 14px;
+  transition: background 0.2s, opacity 0.2s;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background: #e03030;
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Result card --- */
+.result-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  margin-top: 36px;
+  padding: 28px 24px;
+}
+
+.win-bar-container {
+  background: #2e2e2e;
+  border-radius: 999px;
+  height: 18px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.win-bar {
+  background: linear-gradient(90deg, #ff3c3c, #ff7043);
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+  width: 0%;
+}
+
+.win-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.win-label {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.win-label.right {
+  text-align: right;
+}
+
+.explanation {
+  border-top: 1px solid #2a2a2a;
+  color: #bbb;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-top: 20px;
+  padding-top: 16px;
+}
+
+/* --- Error --- */
+.error {
+  background: #2a0a0a;
+  border: 1px solid #6b1c1c;
+  border-radius: 8px;
+  color: #f88;
+  margin-top: 24px;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+}
+
+.hidden {
+  display: none;
+}
+
+/* --- Loading state --- */
+#submit-btn.loading::after {
+  content: '…';
+}
