@@ -25,9 +25,9 @@ const CHARACTERS = [
   },
   {
     name: "Clive",
-    tags: ["power", "beginner", "gimmicky", "keepaway"],
+    tags: ["power", "beginner", "gimmicky", "keepaway", "unique"],
     difficulty: "Beginner",
-    description: "DLC character that has a Big ass sword that kills people. Have fun!"
+    description: "DLC character that has a Big ass sword that kills people. Have fun! (You have to pay extra to play him though)"
   },
   {
     name: "Jack-8",
@@ -36,28 +36,28 @@ const CHARACTERS = [
     description: "Slow but absolutely destructive. Every hit hurts, and his range keeps opponents at bay."
   },
   {
-    name: "Kuma",
+    name: "Kuma/Panda",
     tags: ["gimmicky", "unique", "power", "beginner"],
     difficulty: "Beginner",
-    description: "A giant bear with surprisingly powerful tools. Gimmicky, Mickey Mouse, and genuinely confusing to fight."
+    description: "A giant bear with surprisingly powerful tools for some reason. Gimmicky, Mickey Mouse, and genuinely confusing to fight. *Note panda is a separate character but has similar mechanics*"
   },
   {
     name: "Jin Kazama",
-    tags: ["balanced", "punisher", "intermediate", "fundamentals"],
-    difficulty: "Intermediate",
-    description: "The Main Character of the series. Jin has answers for every situation and rewards solid fundamentals. Jack of all trade character"
+    tags: ["balanced", "advanced", "fundamentals"],
+    difficulty: "Advanced",
+    description: "The Main Character of the series. Jin has answers for every situation and rewards solid fundamentals."
   },
   {
     name: "King",
-    tags: ["grappler", "power", "mixup", "intermediate"],
-    difficulty: "Intermediate",
+    tags: ["grappler", "power", "mixup", "beginner"],
+    difficulty: "Beginner",
     description: "Wrestling powerhouse who dominates up close with throws and chain grabs. Opponents never know what's coming. One of the most frustrating characters to go against"
   },
   {
     name: "Feng Wei",
-    tags: ["rushdown", "mixup", "intermediate", "power"],
-    difficulty: "Intermediate",
-    description: "Aggressive with built-in evasion and hard-hitting mixups. Feng punishes hard and overwhelms at close range."
+    tags: ["rushdown", "mixup", "beginner", "power"],
+    difficulty: "Beginner",
+    description: "Aggressive with built-in evasion and hard-hitting mixups. Strong combos and overwhelming pressure the closer he is to opponents."
   },
   {
     name: "Dragunov",
@@ -67,21 +67,21 @@ const CHARACTERS = [
   },
   {
     name: "Bryan Fury",
-    tags: ["punisher", "power", "advanced", "combos"],
+    tags: ["counter", "power", "advanced", "combos"],
     difficulty: "Intermediate",
     description: "Brutish and terrifying under pressure. Bryan dishes out massive damage and punishes reckless play."
   },
   {
     name: "Hwoarang",
-    tags: ["rushdown", "pressure", "intermediate", "combos"],
-    difficulty: "Intermediate",
-    description: "Kick-heavy rushdown from multiple stances. Hwoarang overwhelms opponents who can't block his mix."
+    tags: ["rushdown", "pressure", "advanced", "combos"],
+    difficulty: "Advanced",
+    description: "Kick-heavy rushdown from multiple stances. Hwoarang overwhelms opponents who can't block his mix. He has over 200 moves in the game have fun!"
   },
   {
     name: "Marshall Law",
-    tags: ["rushdown", "mixup", "intermediate", "combos", "stylish"],
-    difficulty: "Intermediate",
-    description: "Fast, stylish, and full of high-low mixups. Law rewards combo mastery with flashy, satisfying chains."
+    tags: ["rushdown", "mixup", "beginner", "combos"],
+    difficulty: "Beginner",
+    description: "Fast, stylish, and full of high-low mixups. Well rounded character with strong defensive capabilities and offensive potential."
   },
   {
     name: "Reina",
@@ -97,15 +97,15 @@ const CHARACTERS = [
   },
   {
     name: "Victor Chevalier",
-    tags: ["mixup", "balanced", "intermediate", "stylish"],
+    tags: ["mixup", "balanced", "beginner", "stylish"],
     difficulty: "Intermediate",
     description: "A stylish spy with a versatile arsenal. Victor mixes opponents up while looking effortlessly cool."
   },
   {
     name: "Jun Kazama",
-    tags: ["balanced", "counter", "intermediate", "fundamentals"],
-    difficulty: "Intermediate",
-    description: "Graceful and defensive with strong counter-hit tools. Jun rewards patience and picking your spots."
+    tags: ["tricky","rushdown", "zoner", "beginner",],
+    difficulty: "Beginner",
+    description: "High damage output. A lot of stances and has projectiles (for some reason)."
   },
   {
     name: "Shaheen",
@@ -123,7 +123,7 @@ const CHARACTERS = [
     name: "Leo Kliesen",
     tags: ["balanced", "mixup", "intermediate"],
     difficulty: "Intermediate",
-    description: "Adaptable mid-range fighter with solid mixup potential. Leo is a reliable all-rounder."
+    description: "Adaptable mid-range fighter with solid mixup potential. Leo is a reliable all-rounder.*Warning your blood pressure will increase playing against this character*"
   },
   {
     name: "Eddy Gordo",
@@ -139,7 +139,7 @@ const CHARACTERS = [
   },
   {
     name: "Kazuya Mishima",
-    tags: ["punisher", "power", "advanced", "fundamentals"],
+    tags: ["mixup", "power", "advanced", "fundamentals"],
     difficulty: "Advanced",
     description: "The gold standard of Tekken execution. Kazuya devastates anyone who steps into his Electric Wind God Fist range."
   },
@@ -175,9 +175,9 @@ const CHARACTERS = [
   },
   {
     name: "Alisa Bosconovitch",
-    tags: ["zoner", "keepaway", "advanced", "tricky"],
-    difficulty: "Advanced",
-    description: "Technical zoner with unique chainsaw mechanics. Alisa controls space in ways no one else can."
+    tags: ["tricky", "keepaway", "beginner", "unique"],
+    difficulty: "Beginner",
+    description: "She has chainsaws and she kills people with them (I'm not kidding). Alisa controls space in ways no one else can. She can also fly for some reason"
   },
   {
     name: "Zafina",
@@ -193,7 +193,7 @@ const CHARACTERS = [
   },
   {
     name: "Anna Williams",
-    tags: ["pressure", "mixup", "advanced", "tricky"],
+    tags: ["pressure", "mixup", "intermediate", "tricky"],
     difficulty: "Advanced",
     description: "Technical character with devastating pressure and seductive high-low mix. Anna requires dedication but delivers."
   },
@@ -203,4 +203,11 @@ const CHARACTERS = [
     difficulty: "Advanced",
     description: "The iconic Mishima patriarch. Heihachi rewards mastery with devastating punishment and trademark power."
   },
+    {
+    name: "Asuka Kazama",
+    tags: ["punisher", "power", "beginner"],
+    difficulty: "Beginner",
+    description: "Asuka is notoriously infamous for her defensive and turn stealing tools. She is a great character for beginners to learn the game with."
+  },
+
 ];
