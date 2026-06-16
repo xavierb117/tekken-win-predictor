@@ -1,40 +1,45 @@
 // ── Config ────────────────────────────────────────────────────────────────────
 // When the backend is ready, point this at the real endpoint.
-// Expected POST body:  { player1: "username", player2: "username" }
+// Expected POST body:  { player1, player2, player1_char, player2_char }
 // Expected response:   { player1_win_pct: 63, explanation: "..." }
-const API_URL = '/api/predict';
+// Backend default for local testing:
+const API_URL = 'http://localhost:5000/api/predict';
 
 // Set to true to use fake data while the backend isn't ready yet.
-const USE_STUB = true;
+const USE_STUB = false;
 
 // ── Stub ──────────────────────────────────────────────────────────────────────
-async function stubPredict(player1, player2) {
+async function stubPredict(player1, player2, player1_char, player2_char) {
   await new Promise(r => setTimeout(r, 800)); // simulate network delay
   const pct = Math.floor(Math.random() * 41) + 30; // 30–70%
   return {
     player1_win_pct: pct,
-    explanation: `Based on recent match history, ${player1} has a slight edge over ${player2} ` +
-      `due to stronger character matchup performance and a higher Glicko2 trajectory. ` +
-      `(Stub data — real model not connected yet.)`
+    explanation: `Matchup analysis: ${player1_char} vs ${player2_char}. Based on recent match history, ${player1} has a slight edge over ${player2} due to stronger character matchup performance and a higher Glicko2 trajectory. (Stub data — real model not connected yet.)`
   };
 }
 
 // ── API call ─────────────────────────────────────────────────────────────────
-async function predict(player1, player2) {
-  if (USE_STUB) return stubPredict(player1, player2);
+async function predict(player1, player2, player1_char, player2_char) {
+  if (USE_STUB) return stubPredict(player1, player2, player1_char, player2_char);
 
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ player1, player2 }),
-  });
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ player1, player2, player1_char, player2_char }),
+    });
 
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || `Server error (${res.status})`);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || `Server error (${res.status})`);
+    }
+
+    return res.json();
+  } catch (err) {
+    // Fallback to stub if backend unreachable
+    console.warn('API request failed, falling back to stub:', err.message || err);
+    return stubPredict(player1, player2, player1_char, player2_char);
   }
-
-  return res.json();
 }
 
 // ── UI helpers ────────────────────────────────────────────────────────────────
@@ -77,13 +82,15 @@ form.addEventListener('submit', async (e) => {
 
   const player1 = document.getElementById('player1').value.trim();
   const player2 = document.getElementById('player2').value.trim();
+  const player1_char = document.getElementById('player1-char').value.trim() || 'Unknown';
+  const player2_char = document.getElementById('player2-char').value.trim() || 'Unknown';
 
   if (!player1 || !player2) return;
 
   setLoading(true);
   try {
-    const data = await predict(player1, player2);
-    showResult(player1, player2, data);
+    const data = await predict(player1, player2, player1_char, player2_char);
+    showResult(`${player1} (${player1_char})`, `${player2} (${player2_char})`, data);
   } catch (err) {
     showError(err.message || 'Something went wrong. Try again.');
   } finally {
