@@ -1,9 +1,9 @@
 const CHARACTERS = [
   {
     name: "Paul Phoenix",
-    tags: ["rushdown", "power", "beginner"],
-    difficulty: "Beginner",
-    description: "No-nonsense brawler with one of the highest damage outputs in the game. Hit hard, keep it simple."
+    tags: ["rushdown", "power", "intermediate"],
+    difficulty: "Intermediate",
+    description: "No-nonsense brawler with one of the highest damage outputs in the game. Relies on reading what your opponent is going to do and deleting them with a single punch."
   },
   {
     name: "Lars Alexandersson",
