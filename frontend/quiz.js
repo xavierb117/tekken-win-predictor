@@ -40,16 +40,18 @@ function selectAnswer(tags) {
 }
 
 function calculateResults() {
-  const tagSet = new Set(collectedTags);
+  const tagCounts = {};
+  for (const tag of collectedTags) {
+    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+  }
 
   const scored = CHARACTERS.map(char => ({
     ...char,
-    score: char.tags.filter(t => tagSet.has(t)).length,
+    score: char.tags.reduce((sum, t) => sum + (tagCounts[t] || 0), 0),
   }));
 
   scored.sort((a, b) => b.score - a.score);
 
-  // Include characters within 1 point of the top score, up to 3
   const topScore  = scored[0].score;
   const threshold = Math.max(1, topScore - 1);
   return scored.filter(c => c.score >= threshold).slice(0, 3);
