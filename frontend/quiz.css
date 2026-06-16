@@ -244,3 +244,22 @@ html.light .btn-link:hover {
 .btn-link:hover {
   color: #ff3c3c;
 }
+
+/* --- Responsive --- */
+@media (max-width: 520px) {
+  .question-card {
+    padding: 20px 16px;
+  }
+
+  .char-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .results-actions {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
