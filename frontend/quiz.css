@@ -109,10 +109,18 @@
   flex-shrink: 0;
   font-size: 1.4rem;
   font-weight: 800;
-  height: 52px;
-  line-height: 52px;
+  height: 64px;
+  line-height: 64px;
+  overflow: hidden;
   text-align: center;
-  width: 52px;
+  width: 64px;
+}
+
+.char-avatar img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .char-info {

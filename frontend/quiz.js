@@ -68,7 +68,9 @@ function showResults() {
     const card = document.createElement('div');
     card.className = 'char-card';
     card.innerHTML = `
-      <div class="char-avatar">${char.name[0]}</div>
+      <div class="char-avatar">
+        <img src="${char.image}" alt="${char.name}" onerror="this.style.display='none';this.parentElement.textContent='${char.name[0]}'">
+      </div>
       <div class="char-info">
         <div class="char-name">${char.name}</div>
         <span class="char-difficulty difficulty-${char.difficulty}">${char.difficulty}</span>
