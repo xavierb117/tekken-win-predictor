@@ -36,33 +36,76 @@ def deterministic_pct(seed: str) -> int:
     return 30 + (v % 41)  # 30..70
 
 
-async def call_groq(prompt: str) -> Optional[str]:
+async def call_groq(prompt: str, max_tokens: int = 400) -> Optional[str]:
     GROQ_API_URL = os.getenv("GROQ_API_URL")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    GROQ_DEPLOYMENT = os.getenv("GROQ_DEPLOYMENT")
+    GROQ_MODEL = os.getenv("GROQ_MODEL", "gpt-4o-mini")
+
     if not GROQ_API_URL or not GROQ_API_KEY:
         return None
 
+    base = GROQ_API_URL.rstrip('/')
+
+    # Determine endpoint to call. If the provided URL already includes a deployment
+    # or completions path, use it as-is. Otherwise, if a deployment id is provided,
+    # target the deployment chat completions endpoint. This matches Groq's
+    # OpenAI-compatible deployment path: /openai/deployments/<id>/chat/completions
+    if any(x in base for x in ("/deployments/", "/chat/completions", "/completions")):
+        endpoint = base
+    elif GROQ_DEPLOYMENT:
+        endpoint = f"{base}/openai/deployments/{GROQ_DEPLOYMENT}/chat/completions"
+    else:
+        # Last-resort: try using the model name as a deployment identifier
+        endpoint = f"{base}/openai/deployments/{GROQ_MODEL}/chat/completions"
+
     headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
-    payload = {"prompt": prompt, "max_tokens": 400}
+
+    # Use OpenAI-style chat payload
+    payload = {
+        "model": GROQ_MODEL,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": max_tokens,
+    }
 
     try:
         async with httpx.AsyncClient(timeout=30) as client:
-            resp = await client.post(GROQ_API_URL, headers=headers, json=payload)
+            resp = await client.post(endpoint, headers=headers, json=payload)
             resp.raise_for_status()
             data = resp.json()
-            # Try common response shapes
+
+            # Common shapes:
+            # - {choices: [{message: {content: "..."}}]}
+            # - {choices: [{text: "..."}]}
+            # - {text: "..."}
             if isinstance(data, dict):
-                if "text" in data:
-                    return data["text"]
+                # Try chat-style choices
+                choices = data.get("choices")
+                if choices and isinstance(choices, list) and len(choices) > 0:
+                    first = choices[0]
+                    if isinstance(first, dict):
+                        # message.content
+                        msg = first.get("message") or first.get("delta") or {}
+                        if isinstance(msg, dict):
+                            content = msg.get("content")
+                            if content:
+                                return content
+                        # fallback to text
+                        txt = first.get("text")
+                        if txt:
+                            return txt
+
+                # direct text
+                if "text" in data and isinstance(data.get("text"), str):
+                    return data.get("text")
+
+                # some APIs return `output` as list
                 if "output" in data:
-                    # output may be list
-                    out = data["output"]
+                    out = data.get("output")
                     if isinstance(out, list):
                         return "\n".join(str(x) for x in out)
                     return str(out)
-                if "choices" in data and data["choices"]:
-                    c = data["choices"][0]
-                    return c.get("text") or c.get("message") or json.dumps(c)
+
             return None
     except Exception:
         return None
