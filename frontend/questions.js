@@ -10,11 +10,12 @@ const QUESTIONS = [
     ]
   },
   {
+    //keep
     question: "How much time are you willing to spend in training mode?",
     answers: [
-      { text: "As little as possible",             tags: ["beginner"] },
-      { text: "A fair amount — I want to improve", tags: ["intermediate"] },
-      { text: "All of it — I want to master them", tags: ["advanced"] },
+      { text: "I have to train...? LMFAO I have a life unfortunately",             tags: ["beginner"] },
+      { text: "A decent amount I'm a casual", tags: ["intermediate"] },
+      { text: "All of it and I will devote my life to this game", tags: ["advanced"] },
     ]
   },
   {
@@ -38,9 +39,9 @@ const QUESTIONS = [
   {
     question: "Do you want a weird or gimmicky character?",
     answers: [
-      { text: "Yes — unique and unpredictable all the way", tags: ["gimmicky", "unique", "tricky"] },
-      { text: "No — clean fundamentals only",              tags: ["balanced", "fundamentals"] },
-      { text: "A little bit of both",                      tags: ["mixup", "balanced"] },
+      { text: "Yes — Give me the most disney mickey mouse club house character in the game!", tags: ["gimmicky", "unique", "tricky"] },
+      { text: "No — I'm not a bum!",              tags: ["balanced", "fundamentals"] },
+      { text: "Both! I want to be an honest player but the voices are getting louder...",                      tags: ["mixup", "balanced", "fundamentals"] },
     ]
   },
 
@@ -63,19 +64,21 @@ const QUESTIONS = [
     ]
   },
   {
+    //keep
     question: "How do you feel about throws and command grabs?",
     answers: [
-      { text: "I want them as a core part of my game",  tags: ["grappler", "mixup"] },
-      { text: "Nice to have, but not the main focus",   tags: ["balanced"] },
-      { text: "I'd rather stick to striking only",      tags: ["rushdown", "fundamentals"] },
+      { text: "I'm a weirdo that loves grabbing people (in game)",  tags: ["grappler", "mixup"] },
+      { text: "It's alright I guess. Sometimes you have to grab people but not all the time!",   tags: ["balanced"] },
+      { text: "I'm not a dorky, lame, boring, grab abuser. I want straight hands!",      tags: ["rushdown", "fundamentals"] },
     ]
   },
   {
+    //keep
     question: "How do you feel about managing multiple stances?",
     answers: [
       { text: "Love it — more stances means more tools",     tags: ["tricky", "mixup", "advanced"] },
-      { text: "One or two is fine",                          tags: ["intermediate", "balanced"] },
-      { text: "Keep it simple — one stance is enough",       tags: ["beginner", "fundamentals"] },
+      { text: "One or two is fine I think",                          tags: ["intermediate", "balanced"] },
+      { text: "Wtf is a stance?",       tags: ["beginner", "fundamentals"] },
     ]
   },
   {
@@ -99,7 +102,7 @@ const QUESTIONS = [
     question: "When you knock an opponent down, what do you want to do?",
     answers: [
       { text: "Chase and mix them up on wake-up",          tags: ["rushdown", "mixup"] },
-      { text: "Go for a grab or throw as they get up",     tags: ["grappler", "tricky"] },
+      { text: "Grab Them!!!",     tags: ["grappler", "tricky"] },
       { text: "Stay back and punish whatever they do",     tags: ["keepaway", "counter", "punisher"] },
       { text: "Go for the most damage possible",           tags: ["power", "combos"] },
     ]
