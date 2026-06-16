@@ -1,5 +1,4 @@
 const QUESTIONS = [
-  // ── Original 5 ───────────────────────────────────────────────────────────────
   {
     question: "How do you want to approach your opponent?",
     answers: [
@@ -47,20 +46,12 @@ const QUESTIONS = [
 
   // ── New 10 ───────────────────────────────────────────────────────────────────
   {
-    question: "How important is speed and mobility to you?",
-    answers: [
-      { text: "Very — I need to move faster than my opponent",   tags: ["mobile", "rushdown"] },
-      { text: "Somewhat — a few movement options are nice",      tags: ["balanced", "mobile"] },
-      { text: "Not a priority — I win on reads and power",       tags: ["power", "fundamentals"] },
-    ]
-  },
-  {
     question: "When your opponent attacks, what's your preferred response?",
     answers: [
       { text: "Evade and make them whiff",              tags: ["tricky", "mobile"] },
       { text: "Block and punish their mistake",         tags: ["punisher", "counter"] },
-      { text: "Keep them out before they even get in",  tags: ["keepaway", "zoner"] },
-      { text: "Interrupt them with my own attack",      tags: ["rushdown", "pressure"] },
+      { text: "Keep them out before they even get in ",  tags: ["keepaway", "zoner"] },
+      { text: "I'm a masher I'll turn off my brain and let my fingers do the work (pause)",      tags: ["rushdown", "pressure"] },
     ]
   },
   {
@@ -79,15 +70,6 @@ const QUESTIONS = [
       { text: "Love it — more stances means more tools",     tags: ["tricky", "mixup", "advanced"] },
       { text: "One or two is fine I think",                          tags: ["intermediate", "balanced"] },
       { text: "Wtf is a stance?",       tags: ["beginner", "fundamentals"] },
-    ]
-  },
-  {
-    question: "What would make you feel most satisfied after a win?",
-    answers: [
-      { text: "Ending it with one massive damage hit",          tags: ["power"] },
-      { text: "Landing a long, flashy combo",                   tags: ["combos", "stylish"] },
-      { text: "Landing a grab they had no answer for",          tags: ["grappler"] },
-      { text: "Confusing them so badly they didn't know what hit them", tags: ["tricky", "gimmicky", "mixup"] },
     ]
   },
   {
@@ -110,26 +92,34 @@ const QUESTIONS = [
   {
     question: "Do you want a character that stands out as unique on the roster?",
     answers: [
-      { text: "Yes — I want to play someone no one else plays", tags: ["unique", "gimmicky"] },
-      { text: "Somewhat — a few unique tools would be cool",    tags: ["tricky", "stylish"] },
-      { text: "No — I want something reliable and proven",      tags: ["balanced", "fundamentals"] },
+      { text: "Yes — I want to be quirky", tags: ["unique", "gimmicky"] },
+      { text: "Somewhat — just give me both I guess",    tags: ["tricky", "stylish"] },
+      { text: "No — I want to be average",      tags: ["balanced", "fundamentals"] },
     ]
   },
   {
     question: "How do you feel about characters with long, technical combo routes?",
     answers: [
-      { text: "Love them — I want to maximize every opening",   tags: ["combos", "advanced"] },
-      { text: "They're fine as long as they're not too hard",   tags: ["intermediate", "combos"] },
-      { text: "I'd rather keep combos short and move on",       tags: ["power", "beginner"] },
+      { text: "Love them — I want to maximize every opening I'm not doing anything tomorrow!",   tags: ["combos", "advanced"] },
+      { text: "They're fine as long as they're not too hard I have to wake up early",   tags: ["intermediate", "combos"] },
+      { text: "I'd rather keep combos short and move on I don't want to think",       tags: ["power", "beginner"] },
     ]
   },
   {
-    question: "Last one — pick the word that best describes how you want to win:",
+    question: "What kind of fighter do you want to play as?",
     answers: [
-      { text: "Overwhelming",  tags: ["rushdown", "pressure"] },
-      { text: "Decisive",      tags: ["punisher", "counter", "power"] },
-      { text: "Unpredictable", tags: ["mixup", "tricky", "gimmicky"] },
-      { text: "Dominant",      tags: ["fundamentals", "balanced", "combos"] },
+      { text: "A male fighter",          tags: ["male"] },
+      { text: "A female fighter",        tags: ["female"] },
+      { text: "A robot or machine",      tags: ["machine"] },
+      { text: "An animal",               tags: ["animal"] },
+    ]
+  },
+  {
+    question: "Do you want a character that uses a weapon?",
+    answers: [
+      { text: "Yes — Give me all the weapons!", tags: ["weapon"] },
+      { text: "No — Straight hands",             tags: ["no-weapon"] },
+      { text: "REF! THEY HAVE GUNS, SWORDS, AND A CHAINSAW!!!!! WTF",                    tags: [] },
     ]
   },
 ];
