@@ -1,3 +1,10 @@
+/* Back button container */
+.quiz-back-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
 /* Progress */
 .progress-bar-container {
   background: #2a2a2a;
