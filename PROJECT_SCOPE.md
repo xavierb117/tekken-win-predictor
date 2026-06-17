@@ -7,7 +7,7 @@
 
 ## What This Project Does
 
-A web app where a Tekken 8 player enters their username and their opponent's username. The app returns a predicted win probability and a plain-English explanation of why.
+A web app where a Tekken 8 player enters their username and their opponent's username. The app returns a predicted win probability and a plain-English explanation of why. Important to note that players need to have a history in ranked matches to be able to predict. 
 
 **Example flow:**
 1. You type your username → app pulls your last ~500 ranked matches
