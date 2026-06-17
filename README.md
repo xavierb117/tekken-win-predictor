@@ -6,6 +6,11 @@ An app used to create a win prediction in Tekken 8 against your opponent. Input 
 - Insert opponent username, player ID and character.
 - Submit to obtain winrate percentage against your opponent.
 
+### Bonus Feature For New Players
+- Click on find your character 
+- Answer the quiz questions based on your preferences
+- After the last question it gives you reccomendations of characters based on your answers
+
 ## Dev Instructions:
 1. Open virtual environment. 
 - Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
