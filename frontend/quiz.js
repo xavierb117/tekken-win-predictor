@@ -40,16 +40,18 @@ function selectAnswer(tags) {
 }
 
 function calculateResults() {
-  const tagSet = new Set(collectedTags);
+  const tagCounts = {};
+  for (const tag of collectedTags) {
+    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+  }
 
   const scored = CHARACTERS.map(char => ({
     ...char,
-    score: char.tags.filter(t => tagSet.has(t)).length,
+    score: char.tags.reduce((sum, t) => sum + (tagCounts[t] || 0), 0),
   }));
 
   scored.sort((a, b) => b.score - a.score);
 
-  // Include characters within 1 point of the top score, up to 3
   const topScore  = scored[0].score;
   const threshold = Math.max(1, topScore - 1);
   return scored.filter(c => c.score >= threshold).slice(0, 3);
@@ -66,7 +68,9 @@ function showResults() {
     const card = document.createElement('div');
     card.className = 'char-card';
     card.innerHTML = `
-      <div class="char-avatar">${char.name[0]}</div>
+      <div class="char-avatar">
+        <img src="${char.image}" alt="${char.name}" onerror="this.style.display='none';this.parentElement.textContent='${char.name[0]}'">
+      </div>
       <div class="char-info">
         <div class="char-name">${char.name}</div>
         <span class="char-difficulty difficulty-${char.difficulty}">${char.difficulty}</span>

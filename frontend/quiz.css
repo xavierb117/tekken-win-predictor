@@ -1,3 +1,10 @@
+/* Back button container */
+.quiz-back-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
 /* Progress */
 .progress-bar-container {
   background: #2a2a2a;
@@ -102,10 +109,18 @@
   flex-shrink: 0;
   font-size: 1.4rem;
   font-weight: 800;
-  height: 52px;
-  line-height: 52px;
+  height: 64px;
+  line-height: 64px;
+  overflow: hidden;
   text-align: center;
-  width: 52px;
+  width: 64px;
+}
+
+.char-avatar img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .char-info {
@@ -243,4 +258,23 @@ html.light .btn-link:hover {
 
 .btn-link:hover {
   color: #ff3c3c;
+}
+
+/* --- Responsive --- */
+@media (max-width: 520px) {
+  .question-card {
+    padding: 20px 16px;
+  }
+
+  .char-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .results-actions {
+    flex-direction: column;
+    gap: 14px;
+  }
 }
