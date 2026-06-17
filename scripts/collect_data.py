@@ -30,7 +30,7 @@ MONTHS = [
 # How many records to collect per month before stopping.
 # ~5,000 records per API request, so 500k = ~100 requests per month.
 # Set to None to collect the entire month (will take a long time).
-MAX_RECORDS_PER_MONTH = 500_000
+MAX_RECORDS_PER_MONTH = 2_000_000
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
