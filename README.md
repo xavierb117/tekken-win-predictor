@@ -14,8 +14,8 @@ An app used to create a win prediction in Tekken 8 against your opponent. Input 
 ## Dev Instructions:
 1. Open virtual environment. 
 - Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-- python -m venv venv
-- venv\Scripts\Activate.ps1
+- python -m venv .venv
+- .venv\Scripts\Activate.ps1
 2. Run these commands:
 - pip install requests pandas jupyter torch
 - pip install torch scikit-learn
