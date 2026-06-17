@@ -244,4 +244,39 @@ const CHARACTERS = [
     difficulty: "Beginner",
     description: "Asuka is notoriously infamous for her defensive and turn stealing tools. She is a great character for beginners to learn the game with."
   },
+  {
+    name: "Lidia Sobieska",
+    image: "images/t8Lidia%20icon.png",
+    tags: ["power", "rushdown", "beginner", "female", "no-weapon"],
+    difficulty: "Beginner",
+    description: "A Polish Prime Minister who also happens to be a karate master. She's able to throw 300 million moves out and one of them will hit you and kill you."
+  },
+  {
+    name: "Fahkumram",
+    image: "images/t8Fahk%20icon.png",
+    tags: ["power", "keepaway", "advanced", "male", "no-weapon"],
+    difficulty: "Advanced",
+    description: "A big ass Muay Thai fighter from Thailand with one of the longest reaches in the game. He yells a lot when he hits you but he's cool doing it ."
+  },
+  {
+    name: "Armor King",
+    image: "images/t8ArmorKing%20icon.png",
+    tags: ["grappler", "power", "mixup", "intermediate", "male", "no-weapon"],
+    difficulty: "Intermediate",
+    description: "King's edgier, meaner, blacker version of king. Same wrestling base but has better combos. He breaths fire too wtf"
+  },
+  {
+    name: "Kunimitsu",
+    image: "images/t8Kuni%20icon.png",
+    tags: ["tricky", "rushdown", "advanced", "mobile", "female", "weapon"],
+    difficulty: "Advanced",
+    description: "A female ninja with fast, deceptive movement and a toolkit built around confusing you. She teleports, throws kunai, and punishes from angles you didn't see coming. One of the slipperiest characters in the game."
+  },
+  {
+    name: "Miary Zo",
+    image: "images/t8Miary%20icon.png",
+    tags: ["mobile", "weapon", "intermediate", "mixup", "female"],
+    difficulty: "Intermediate",
+    description: "Idk much about this character honestly. She just throws a bunch of random shit in the void and it hits."
+  },
 ];
