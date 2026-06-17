@@ -35,10 +35,10 @@ h1 {
 
 .subtitle {
   text-align: center;
-  color: #888;
+  color: #c8c8c8;
   margin-top: 8px;
   margin-bottom: 36px;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
 }
 
 /* --- Form --- */
@@ -67,6 +67,17 @@ label {
   color: #aaa;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+a.id-hint {
+  color: #ff3c3c;
+  text-decoration: none;
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+
+a.id-hint:hover {
+  text-decoration: underline;
 }
 
 input[type="text"] {
@@ -253,7 +264,7 @@ html.light h1 {
 }
 
 html.light .subtitle {
-  color: #777;
+  color: #444;
 }
 
 html.light label {
