@@ -24,9 +24,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Model checkpoints and outputs (add back selectively when needed)
-models/
-*.pt
+# Large model checkpoints (commit small trained models directly)
 *.pth
 *.ckpt
 
