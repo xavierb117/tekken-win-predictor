@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Your Character — Tekken 8</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="quiz.css" />
+  <script>if (localStorage.getItem('tekken-theme') === 'light') document.documentElement.classList.add('light');</script>
+</head>
+<body>
+  <main>
+    <h1>Find Your Character</h1>
+    <p class="subtitle">Answer a few questions to find your best match.</p>
+
+    <!-- Question view -->
+    <section id="quiz-section">
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <p id="progress-label" class="progress-label">Question 1 of 5</p>
+
+      <div id="question-card" class="question-card">
+        <p id="question-text" class="question-text"></p>
+        <div id="answers" class="answers"></div>
+      </div>
+
+      <div class="quiz-back-container">
+        <a href="index.html" class="btn-secondary">← Back to Predictor</a>
+      </div>
+    </section>
+
+    <!-- Results view -->
+    <section id="results-section" class="hidden">
+      <h2 class="results-title">Your Matches</h2>
+      <p class="results-subtitle">Based on your answers, here are your top picks.</p>
+      <div id="character-cards" class="character-cards"></div>
+      <div class="results-actions">
+        <button id="retry-btn" class="btn-secondary">Try Again</button>
+        <a href="index.html" class="btn-link">← Back to Predictor</a>
+      </div>
+    </section>
+  </main>
+
+  <button id="theme-toggle" class="theme-toggle">☀ Light</button>
+  <script src="characters.js"></script>
+  <script src="questions.js"></script>
+  <script src="quiz.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>
