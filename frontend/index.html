@@ -16,14 +16,22 @@
       <div class="players">
         <div class="player-field">
           <label for="player1">Your Username</label>
-          <input id="player1" type="text" placeholder="e.g. KazuyaMain99" autocomplete="off" required />
+          <input id="player1" type="text" placeholder="e.g. KazuyaMain99" autocomplete="off" />
+          <label for="player1-polaris">Your Polaris ID <span class="id-hint">(find at wank.wavu.wiki)</span></label>
+          <input id="player1-polaris" type="text" placeholder="e.g. 379Jq8LBFQbM" autocomplete="off" />
+          <label for="player1-char">Your Character</label>
+          <input id="player1-char" type="text" list="char-list" placeholder="e.g. Kazuya Mishima" autocomplete="off" />
         </div>
 
         <div class="vs">VS</div>
 
         <div class="player-field">
           <label for="player2">Opponent Username</label>
-          <input id="player2" type="text" placeholder="e.g. DragonFistKing" autocomplete="off" required />
+          <input id="player2" type="text" placeholder="e.g. DragonFistKing" autocomplete="off" />
+          <label for="player2-polaris">Their Polaris ID <span class="id-hint">(find at wank.wavu.wiki)</span></label>
+          <input id="player2-polaris" type="text" placeholder="e.g. 2iD4DQA57aEG" autocomplete="off" />
+          <label for="player2-char">Their Character</label>
+          <input id="player2-char" type="text" list="char-list" placeholder="e.g. King" autocomplete="off" />
         </div>
       </div>
 
@@ -54,6 +62,15 @@
   </main>
 
   <button id="theme-toggle" class="theme-toggle">☀ Light</button>
+  <datalist id="char-list"></datalist>
+  <script src="characters.js"></script>
+  <script>
+    CHARACTERS.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.name;
+      document.getElementById('char-list').appendChild(opt);
+    });
+  </script>
   <script src="app.js"></script>
   <script src="theme.js"></script>
 </body>

@@ -19,14 +19,14 @@ async function stubPredict(player1, player2, player1_char, player2_char) {
 }
 
 // ── API call ─────────────────────────────────────────────────────────────────
-async function predict(player1, player2, player1_char, player2_char) {
+async function predict(player1, player2, player1_char, player2_char, player1_polaris, player2_polaris) {
   if (USE_STUB) return stubPredict(player1, player2, player1_char, player2_char);
 
   try {
     const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ player1, player2, player1_char, player2_char }),
+      body: JSON.stringify({ player1, player2, player1_char, player2_char, player1_polaris, player2_polaris }),
     });
 
     if (!res.ok) {
@@ -80,16 +80,25 @@ function setLoading(loading) {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const player1 = document.getElementById('player1').value.trim();
-  const player2 = document.getElementById('player2').value.trim();
+  const player1_polaris = document.getElementById('player1-polaris').value.trim();
+  const player2_polaris = document.getElementById('player2-polaris').value.trim();
+  const player1 = document.getElementById('player1').value.trim() || player1_polaris || 'Player 1';
+  const player2 = document.getElementById('player2').value.trim() || player2_polaris || 'Player 2';
   const player1_char = document.getElementById('player1-char').value.trim() || 'Unknown';
   const player2_char = document.getElementById('player2-char').value.trim() || 'Unknown';
 
-  if (!player1 || !player2) return;
+  if (!player1_polaris && !document.getElementById('player1').value.trim()) {
+    showError('Enter a username or Polaris ID for Player 1.');
+    return;
+  }
+  if (!player2_polaris && !document.getElementById('player2').value.trim()) {
+    showError('Enter a username or Polaris ID for Player 2.');
+    return;
+  }
 
   setLoading(true);
   try {
-    const data = await predict(player1, player2, player1_char, player2_char);
+    const data = await predict(player1, player2, player1_char, player2_char, player1_polaris, player2_polaris);
     showResult(`${player1} (${player1_char})`, `${player2} (${player2_char})`, data);
   } catch (err) {
     showError(err.message || 'Something went wrong. Try again.');
