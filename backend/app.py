@@ -1,4 +1,6 @@
 import os
+import re
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -198,116 +200,83 @@ except Exception as e:
     print(f"Warning: could not load model: {e}")
 
 
-# ── Live Wavu API lookup ──────────────────────────────────────────────────────
-WAVU_URL = "https://wank.wavu.wiki/api/replays"
+# ── Player profile lookup ─────────────────────────────────────────────────────
+_RANK_THRESHOLDS = [
+    (1050, 0),  (1075, 1),  (1100, 2),  (1125, 3),  (1150, 4),
+    (1175, 5),  (1200, 6),  (1225, 7),  (1250, 8),  (1275, 9),
+    (1300, 10), (1325, 11), (1375, 12), (1425, 13), (1475, 14),
+    (1525, 15), (1550, 16), (1575, 17), (1600, 18), (1625, 19),
+    (1650, 20), (1675, 21), (1700, 22), (1725, 23), (1750, 24),
+    (1800, 25), (1850, 26), (1900, 27), (1950, 28),
+]
 
-def _extract_stats(replays: list, polaris_id: str) -> Optional[dict]:
-    """Pull stats for a specific polaris_id out of a list of replay dicts."""
-    latest_stats = None
-    wins = 0
-    total = 0
-    char_wins: dict = {}
-    char_total: dict = {}
+def _rating_to_rank(rating: float) -> int:
+    for threshold, rank in _RANK_THRESHOLDS:
+        if rating < threshold:
+            return rank
+    return 29
 
-    for r in sorted(replays, key=lambda r: r.get("battle_at", 0), reverse=True):
-        if r.get("p1_polaris_id") == polaris_id:
-            won = r.get("winner") == 1
-            cid = r.get("p1_chara_id")
-            if latest_stats is None:
-                latest_stats = {
-                    "rating": r.get("p1_rating_before", 0),
-                    "rank":   r.get("p1_rank", 0),
-                    "power":  r.get("p1_power", 0),
-                }
-        elif r.get("p2_polaris_id") == polaris_id:
-            won = r.get("winner") == 2
-            cid = r.get("p2_chara_id")
-            if latest_stats is None:
-                latest_stats = {
-                    "rating": r.get("p2_rating_before", 0),
-                    "rank":   r.get("p2_rank", 0),
-                    "power":  r.get("p2_power", 0),
-                }
-        else:
-            continue
 
-        total += 1
-        if won:
-            wins += 1
-        char_wins[cid] = char_wins.get(cid, 0) + (1 if won else 0)
-        char_total[cid] = char_total.get(cid, 0) + 1
-
-    if not latest_stats or total == 0:
+async def _fetch_player_profile(polaris_id: str) -> Optional[dict]:
+    """Scrape wank.wavu.wiki/player/{id} for recent match stats when the API doesn't have them."""
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.get(f"https://wank.wavu.wiki/player/{polaris_id}")
+            if resp.status_code != 200:
+                print(f"  Profile page returned {resp.status_code} for {polaris_id}")
+                return None
+            html = resp.text
+    except Exception as e:
+        print(f"  Profile scrape error for {polaris_id}: {e}")
         return None
 
+    scripts = re.findall(r'<script[^>]*>(.*?)</script>', html, re.DOTALL)
+    data = None
+    for script in scripts:
+        if 'const data' not in script:
+            continue
+        m = re.search(r'const data = (\[.*?\]);', script, re.DOTALL)
+        if not m:
+            continue
+        try:
+            candidate = json.loads(m.group(1))
+        except Exception:
+            continue
+        if candidate and isinstance(candidate[0], dict) and 'n' in candidate[0] and 'rating_before' in candidate[0]:
+            data = candidate
+            break
+    if not data:
+        return None
+
+    if not data:
+        return None
+
+    latest = min(data, key=lambda x: x.get('n', 9999))
+    rating = latest.get('rating_before', 0)
+    wins = sum(1 for d in data if d.get('rating_after', 0) > d.get('rating_before', 0))
+    total = len(data)
+    overall_wr = wins / total if total > 0 else 0.5
+    rank = _rating_to_rank(rating)
+    power = MEDIANS['power'] if MEDIANS else 0.0
+
+    recent_opps = [d.get('opp_name', '?') for d in sorted(data, key=lambda x: x.get('n', 9999))[:5]]
+    print(f"  Profile scrape: {polaris_id} rating={rating} rank={rank} wr={overall_wr:.2f} ({wins}/{total})")
+    print(f"  Recent opponents: {', '.join(recent_opps)}")
+
     return {
-        "rating": latest_stats["rating"],
-        "rank":   latest_stats["rank"],
-        "power":  latest_stats["power"],
-        "overall_wr": wins / total,
-        "char_wr_map": {cid: char_wins[cid] / char_total[cid] for cid in char_total},
+        "rating": rating,
+        "rank": rank,
+        "power": power,
+        "overall_wr": overall_wr,
+        "char_wr_map": {},
     }
 
 
+
 async def fetch_wavu_stats(polaris_id: str, player_name: str = "") -> Optional[dict]:
-    """Fetch a player's stats from the Wavu API using their Polaris ID, confirmed by name."""
     if not polaris_id:
         return None
-    polaris_id = polaris_id.replace("-", "")
-    import time
-    try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            # Try direct polaris_id filter first
-            resp = await client.get(WAVU_URL, params={"_format": "json", "polaris_id": polaris_id})
-            resp.raise_for_status()
-            data = resp.json()
-
-            if isinstance(data, list) and any(
-                r.get("p1_polaris_id") == polaris_id or r.get("p2_polaris_id") == polaris_id
-                for r in data
-            ):
-                print(f"  Wavu direct filter hit for {polaris_id}")
-                return _extract_stats(data, polaris_id)
-
-            # Direct filter didn't return this player — scan recent pages
-            print(f"  Wavu direct filter missed {polaris_id}, scanning recent pages...")
-            before = int(time.time())
-            all_matches = []
-
-            for page in range(20):
-                resp = await client.get(WAVU_URL, params={"_format": "json", "before": before})
-                resp.raise_for_status()
-                page_data = resp.json()
-
-                if not page_data:
-                    break
-
-                if page == 0:
-                    sample_ids = [r.get("p1_polaris_id") for r in page_data[:3]]
-                    print(f"  Sample polaris_ids from API: {sample_ids}")
-                    print(f"  Looking for: {polaris_id!r}")
-
-                matched = [
-                    r for r in page_data
-                    if r.get("p1_polaris_id") == polaris_id
-                    or r.get("p2_polaris_id") == polaris_id
-                    or (player_name and r.get("p1_name") == player_name)
-                    or (player_name and r.get("p2_name") == player_name)
-                ]
-                all_matches.extend(matched)
-
-                if len(all_matches) >= 20:
-                    break
-
-                before = page_data[-1].get("battle_at", before) - 1
-
-            if all_matches:
-                print(f"  Found {len(all_matches)} matches for {polaris_id} via page scan")
-            return _extract_stats(all_matches, polaris_id)
-
-    except Exception as e:
-        print(f"  Wavu API error for {polaris_id}: {e}")
-        return None
+    return await _fetch_player_profile(polaris_id.replace("-", ""))
 
 
 # ── Feature helpers ───────────────────────────────────────────────────────────
@@ -357,8 +326,8 @@ async def _run_model(p1_name: str, p1_char: str, p2_name: str, p2_char: str,
     r1, rk1, pw1, wr1, cwr1, cid1 = _get_features(p1_name, p1_char, p1_wavu, p1_polaris)
     r2, rk2, pw2, wr2, cwr2, cid2 = _get_features(p2_name, p2_char, p2_wavu, p2_polaris)
 
-    print(f"P1 features: rating={r1:.0f} rank={rk1} power={pw1:.0f} wr={wr1:.2f} char_wr={cwr1:.2f} (polaris={'✓' if p1_polaris else '✗'})")
-    print(f"P2 features: rating={r2:.0f} rank={rk2} power={pw2:.0f} wr={wr2:.2f} char_wr={cwr2:.2f} (polaris={'✓' if p2_polaris else '✗'})")
+    print(f"P1 ({p1_name}): rating={r1:.0f} rank={rk1} power={pw1:.0f} wr={wr1:.2f} char_wr={cwr1:.2f} (polaris={'✓' if p1_polaris else '✗'})")
+    print(f"P2 ({p2_name}): rating={r2:.0f} rank={rk2} power={pw2:.0f} wr={wr2:.2f} char_wr={cwr2:.2f} (polaris={'✓' if p2_polaris else '✗'})")
 
     mu_wr = 0.5
     if cid1 is not None and cid2 is not None and MATCHUP_WR is not None:
@@ -385,26 +354,18 @@ async def _run_model(p1_name: str, p1_char: str, p2_name: str, p2_char: str,
 
 # ── Groq integration ──────────────────────────────────────────────────────────
 async def call_groq(prompt: str, max_tokens: int = 400) -> Optional[str]:
-    GROQ_API_URL = os.getenv("GROQ_API_URL")
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-    GROQ_DEPLOYMENT = os.getenv("GROQ_DEPLOYMENT")
-    GROQ_MODEL = os.getenv("GROQ_MODEL", "gpt-4o-mini")
+    api_url = os.getenv("GROQ_API_URL", "").rstrip("/")
+    api_key = os.getenv("GROQ_API_KEY", "")
+    model   = os.getenv("GROQ_MODEL", "llama3-8b-8192")
 
-    if not GROQ_API_URL or not GROQ_API_KEY:
+    if not api_url or not api_key:
         return None
 
-    base = GROQ_API_URL.rstrip('/')
+    endpoint = api_url if api_url.endswith("/chat/completions") else f"{api_url}/chat/completions"
 
-    if any(x in base for x in ("/deployments/", "/chat/completions", "/completions")):
-        endpoint = base
-    elif GROQ_DEPLOYMENT:
-        endpoint = f"{base}/openai/deployments/{GROQ_DEPLOYMENT}/chat/completions"
-    else:
-        endpoint = f"{base}/openai/deployments/{GROQ_MODEL}/chat/completions"
-
-    headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
     payload = {
-        "model": GROQ_MODEL,
+        "model": model,
         "messages": [{"role": "user", "content": prompt}],
         "max_tokens": max_tokens,
     }
@@ -414,29 +375,9 @@ async def call_groq(prompt: str, max_tokens: int = 400) -> Optional[str]:
             resp = await client.post(endpoint, headers=headers, json=payload)
             resp.raise_for_status()
             data = resp.json()
-
-            if isinstance(data, dict):
-                choices = data.get("choices")
-                if choices and isinstance(choices, list) and len(choices) > 0:
-                    first = choices[0]
-                    if isinstance(first, dict):
-                        msg = first.get("message") or first.get("delta") or {}
-                        if isinstance(msg, dict):
-                            content = msg.get("content")
-                            if content:
-                                return content
-                        txt = first.get("text")
-                        if txt:
-                            return txt
-                if "text" in data and isinstance(data.get("text"), str):
-                    return data.get("text")
-                if "output" in data:
-                    out = data.get("output")
-                    if isinstance(out, list):
-                        return "\n".join(str(x) for x in out)
-                    return str(out)
-            return None
-    except Exception:
+            return data["choices"][0]["message"]["content"]
+    except Exception as e:
+        print(f"  Groq error: {e}")
         return None
 
 
