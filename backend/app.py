@@ -356,7 +356,7 @@ async def _run_model(p1_name: str, p1_char: str, p2_name: str, p2_char: str,
 async def call_groq(prompt: str, max_tokens: int = 400) -> Optional[str]:
     api_url = os.getenv("GROQ_API_URL", "").rstrip("/")
     api_key = os.getenv("GROQ_API_KEY", "")
-    model   = os.getenv("GROQ_MODEL", "llama3-8b-8192")
+    model   = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
     if not api_url or not api_key:
         return None
@@ -376,6 +376,9 @@ async def call_groq(prompt: str, max_tokens: int = 400) -> Optional[str]:
             resp.raise_for_status()
             data = resp.json()
             return data["choices"][0]["message"]["content"]
+    except httpx.HTTPStatusError as e:
+        print(f"  Groq error: {e} — {e.response.text}")
+        return None
     except Exception as e:
         print(f"  Groq error: {e}")
         return None

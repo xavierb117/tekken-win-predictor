@@ -1,5 +1,5 @@
 # Tekken Win Predictor
-An app used to create a win prediction in Tekken 8 against your opponent. Input you and your opponent's information, then click submit to predict who will win. This app utilizes data from the wavu wank API, collecting 3-12 million records of matches played in the past. The 1st layer utilizes a NN to create an embedding of each player, then the 2nd layer utilizes a NN head classifier to take in the embeddings and create a prediction. Finally, the 3rd layer uses FastAPI to connect to the frontend and use a Groq LLM (llama3-8b-8192) to output the win probability. 
+An app used to create a win prediction in Tekken 8 against your opponent. Input you and your opponent's information, then click submit to predict who will win. This app utilizes data from the wavu wank API, collecting 3-12 million records of matches played in the past. The 1st layer utilizes a NN to create an embedding of each player, then the 2nd layer utilizes a NN head classifier to take in the embeddings and create a prediction. Finally, the 3rd layer uses FastAPI to connect to the frontend and use a Groq LLM (llama-3.1-8b-instant) to output the win probability. 
 
 ## User Instructions
 - Insert your own username, player ID and character.
